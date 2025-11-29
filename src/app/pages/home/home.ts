@@ -6,6 +6,7 @@ import { Register } from '../register/register';
 import { Verify } from '../verify/verify';
 import { Header } from '../../components/shared/header/header';
 import { Footer } from '../../components/shared/footer/footer';
+import { ScrollAnimationService } from '../../services/scroll-animation.service';
 
 @Component({
   selector: 'app-home',
@@ -104,15 +105,17 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   selectedSubject = this.subjects[0];
   isSubjectOpen = false;
 
-  constructor(private el: ElementRef) { }
+  constructor(private el: ElementRef, private scrollAnimationService: ScrollAnimationService) { }
 
   ngOnInit() {
     this.startAutoSlide();
+    this.scrollAnimationService.initializeAOS();
   }
 
   ngAfterViewInit() {
     // start auto-scrolling testimonials after view is ready
     this.startTestimonialsAutoScroll();
+    this.scrollAnimationService.refreshAOS();
   }
 
   startTestimonialsAutoScroll() {
