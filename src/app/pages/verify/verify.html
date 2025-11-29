@@ -1,0 +1,41 @@
+<h2 class="text-2xl font-bold text-center text-[#0B2C7B]">
+  Verify Your Account
+</h2>
+
+<p class="text-gray-500 text-center mt-2">
+  Enter the 6-digit code sent to your email or phone.
+</p>
+
+<div class="flex justify-center gap-3 mt-6">
+  <input #otpInput maxlength="1" type="text" inputmode="numeric" 
+    class="otp w-12 h-12 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-[#0B2C7B] focus:ring-2 focus:ring-[#0B2C7B] outline-none" 
+    (input)="onOtpInput(0, $event)" (keydown)="onOtpKeyDown(0, $event)" />
+  <input #otpInput maxlength="1" type="text" inputmode="numeric" 
+    class="otp w-12 h-12 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-[#0B2C7B] focus:ring-2 focus:ring-[#0B2C7B] outline-none" 
+    (input)="onOtpInput(1, $event)" (keydown)="onOtpKeyDown(1, $event)" />
+  <input #otpInput maxlength="1" type="text" inputmode="numeric" 
+    class="otp w-12 h-12 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-[#0B2C7B] focus:ring-2 focus:ring-[#0B2C7B] outline-none" 
+    (input)="onOtpInput(2, $event)" (keydown)="onOtpKeyDown(2, $event)" />
+  <input #otpInput maxlength="1" type="text" inputmode="numeric" 
+    class="otp w-12 h-12 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-[#0B2C7B] focus:ring-2 focus:ring-[#0B2C7B] outline-none" 
+    (input)="onOtpInput(3, $event)" (keydown)="onOtpKeyDown(3, $event)" />
+  <input #otpInput maxlength="1" type="text" inputmode="numeric" 
+    class="otp w-12 h-12 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-[#0B2C7B] focus:ring-2 focus:ring-[#0B2C7B] outline-none" 
+    (input)="onOtpInput(4, $event)" (keydown)="onOtpKeyDown(4, $event)" />
+  <input #otpInput maxlength="1" type="text" inputmode="numeric" 
+    class="otp w-12 h-12 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-[#0B2C7B] focus:ring-2 focus:ring-[#0B2C7B] outline-none" 
+    (input)="onOtpInput(5, $event)" (keydown)="onOtpKeyDown(5, $event)" />
+</div>
+
+<button (click)="onVerify()" [disabled]="!isOtpValid" class="w-full mt-8 py-3 text-white rounded-xl font-semibold transition" 
+  [ngClass]="{
+    'bg-[#0B2C7B] hover:bg-[#093066]': isOtpValid,
+    'bg-gray-300 text-gray-500 cursor-not-allowed': !isOtpValid
+  }">
+  Verify Account
+</button>
+
+<button (click)="onResendToken()" [disabled]="!canResend" class="mt-4 block mx-auto text-[#0B2C7B] font-medium transition" 
+  [ngClass]="{'opacity-50 cursor-not-allowed': !canResend}">
+  {{ canResend ? 'Resend Code' : 'Resend Code in ' + resendTimer + 's' }}
+</button>

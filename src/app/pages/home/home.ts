@@ -1,14 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, signal, HostListener, ElementRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit, ViewChild, signal, HostListener, ElementRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Login } from '../login/login';
+import { Register } from '../register/register';
+import { Verify } from '../verify/verify';
+import { Header } from '../../components/shared/header/header';
+import { Footer } from '../../components/shared/footer/footer';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, Login, Register, Verify, Header, Footer],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class Home implements OnInit, OnDestroy {
+export class Home implements OnInit, AfterViewInit, OnDestroy {
   currentSlide = signal(0);
   autoSlideInterval: any;
 
@@ -63,6 +68,31 @@ export class Home implements OnInit, OnDestroy {
     }
   ];
 
+  // Testimonials / Reviews (10 dummy reviews)
+  reviews = [
+    { name: 'Sarah K.', role: 'Seller', text: 'EscroLink made selling so much easier — payments were smooth and protected.', avatar: null },
+    { name: 'John M.', role: 'Buyer', text: 'Great service. I felt safe paying through EscroLink and the seller was trustworthy.', avatar: null },
+    { name: 'Priya R.', role: 'Seller', text: 'Quick payouts and excellent support when I needed help.', avatar: null },
+    { name: 'Daniel L.', role: 'Buyer', text: 'Seamless experience and I received my order exactly as described.', avatar: null },
+    { name: 'Aisha B.', role: 'Seller', text: 'Helped reduce disputes — buyers are more confident now.', avatar: null },
+    { name: 'Carlos T.', role: 'Buyer', text: 'Fast resolution for a small dispute, support was very helpful.', avatar: null },
+    { name: 'Maya S.', role: 'Buyer', text: 'User-friendly and reliable escrow system for online deals.', avatar: null },
+    { name: 'Omar F.', role: 'Seller', text: 'Transactions are easier to track, and I’ve seen fewer chargebacks.', avatar: null },
+    { name: 'Lina H.', role: 'Buyer', text: 'I recommend EscroLink to my friends who sell online.', avatar: null },
+    { name: 'Ethan P.', role: 'Seller', text: 'Professional platform — great for social sellers.', avatar: null }
+  ];
+
+  getInitials(name: string) {
+    if (!name) return '';
+    const parts = name.trim().split(/\s+/);
+    const initials = parts.map(p => p[0]).filter(Boolean).slice(0, 2).join('');
+    return initials.toUpperCase();
+  }
+
+  @ViewChild('testimonialsScroll', { static: false }) testimonialsScroll!: ElementRef<HTMLDivElement>;
+  testimonialsInterval: any;
+  testimonialsPaused = false;
+
   // Custom dropdown for Contact Subject
   subjects = [
     'General Inquiry',
@@ -74,10 +104,50 @@ export class Home implements OnInit, OnDestroy {
   selectedSubject = this.subjects[0];
   isSubjectOpen = false;
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef) { }
 
   ngOnInit() {
     this.startAutoSlide();
+  }
+
+  ngAfterViewInit() {
+    // start auto-scrolling testimonials after view is ready
+    this.startTestimonialsAutoScroll();
+  }
+
+  startTestimonialsAutoScroll() {
+    const el = this.testimonialsScroll?.nativeElement;
+    if (!el) return;
+
+    if (this.testimonialsInterval) {
+      clearInterval(this.testimonialsInterval);
+    }
+
+    this.testimonialsInterval = setInterval(() => {
+      if (this.testimonialsPaused) return;
+      if (!el) return;
+      const max = el.scrollWidth - el.clientWidth;
+      if (el.scrollLeft >= max - 1) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: 2, behavior: 'auto' });
+      }
+    }, 20);
+  }
+
+  stopTestimonialsAutoScroll() {
+    if (this.testimonialsInterval) {
+      clearInterval(this.testimonialsInterval);
+      this.testimonialsInterval = null;
+    }
+  }
+
+  pauseTestimonials() {
+    this.testimonialsPaused = true;
+  }
+
+  resumeTestimonials() {
+    this.testimonialsPaused = false;
   }
 
   startAutoSlide() {
@@ -130,5 +200,19 @@ export class Home implements OnInit, OnDestroy {
     if (this.autoSlideInterval) {
       clearInterval(this.autoSlideInterval);
     }
+    this.stopTestimonialsAutoScroll();
+  }
+
+  showModal = false;
+  modalType: 'login' | 'register' | 'verify' | null = null;
+
+  openModal(type: 'login' | 'register' | 'verify') {
+    this.modalType = type;
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.modalType = null;
   }
 }

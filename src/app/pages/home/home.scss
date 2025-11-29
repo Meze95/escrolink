@@ -4,7 +4,7 @@
 }
 
 :host ::ng-deep .max-h-56::-webkit-scrollbar-thumb {
-	background-color: rgba(11,44,123,0.12);
+	background-color: rgba(11, 44, 123, 0.12);
 	border-radius: 9999px;
 }
 
@@ -12,3 +12,52 @@
 	background: transparent;
 }
 
+/* Testimonials horizontal scrollbar */
+:host ::ng-deep .testimonials-scroll::-webkit-scrollbar {
+	height: 10px;
+}
+
+:host ::ng-deep .testimonials-scroll::-webkit-scrollbar-thumb {
+	background-color: rgba(11, 44, 123, 0.12);
+	border-radius: 9999px;
+}
+
+:host ::ng-deep .testimonials-scroll::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+/* Optional: hide scrollbar in firefox while keeping scroll functionality */
+:host ::ng-deep .testimonials-scroll {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(11, 44, 123, 0.12) transparent;
+}
+
+
+@keyframes marquee {
+	0% {
+		transform: translateX(0);
+	}
+
+	100% {
+		transform: translateX(-50%);
+	}
+}
+
+.animate-marquee {
+	animation: marquee 35s linear infinite;
+}
+
+
+
+.modal-scroll::-webkit-scrollbar {
+	width: 6px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+	background: #0B2C7B;
+	border-radius: 10px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+	background: transparent;
+}

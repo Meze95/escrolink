@@ -1,0 +1,19 @@
+.input {
+    @apply mt-2 w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#0B2C7B];
+}
+
+.otp {
+    @apply w-12 h-12 border rounded-xl text-center text-xl focus:ring-2 focus:ring-[#0B2C7B];
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

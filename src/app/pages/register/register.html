@@ -1,0 +1,76 @@
+<h2 class="text-2xl font-bold text-center text-[#0B2C7B]">
+  Create your account
+</h2>
+
+<p class="text-center text-gray-500 mt-2">
+  Join EscroLink for safe online transactions
+</p>
+
+<form class="mt-8 space-y-3" (ngSubmit)="onCreateAccount()">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+    <!-- First Name -->
+    <div>
+      <label class="text-sm font-medium text-gray-700">First Name</label>
+      <input type="text" [(ngModel)]="firstName" name="firstName" class="mt-2 w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#0B2C7B] outline-none"
+        placeholder="John">
+    </div>
+
+    <!-- Last Name -->
+    <div>
+      <label class="text-sm font-medium text-gray-700">Last Name</label>
+      <input type="text" [(ngModel)]="lastName" name="lastName" class="mt-2 w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#0B2C7B] outline-none"
+        placeholder="Doe">
+    </div>
+
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+    <!-- Email -->
+    <div>
+      <label class="text-sm font-medium text-gray-700">Email</label>
+      <input type="email" [(ngModel)]="email" name="email" class="mt-2 w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#0B2C7B] outline-none"
+        placeholder="you@example.com">
+    </div>
+
+    <!-- Phone Number -->
+    <div>
+      <label class="text-sm font-medium text-gray-700">Phone Number</label>
+      <input type="tel" [(ngModel)]="phoneNumber" name="phoneNumber" class="mt-2 w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#0B2C7B] outline-none"
+        placeholder="+1 (555) 000-0000">
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+    <!-- Password -->
+    <div>
+      <label class="text-sm font-medium text-gray-700">Password</label>
+      <input type="password" [(ngModel)]="password" name="password"
+        class="mt-2 w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#0B2C7B] outline-none"
+        placeholder="••••••••">
+    </div>
+
+    <!-- Confirm Password -->
+    <div>
+      <label class="text-sm font-medium text-gray-700">Confirm Password</label>
+      <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword"
+        class="mt-2 w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#0B2C7B] outline-none"
+        placeholder="••••••••">
+    </div>
+  </div>
+
+  <!-- Create Account Button -->
+  <button type="submit" [disabled]="!isFormValid" class="w-full px-4 py-3 font-semibold rounded-xl transition" [ngClass]="{
+    'bg-[#0B2C7B] text-white hover:bg-[#093066]': isFormValid,
+    'bg-gray-300 text-gray-500 cursor-not-allowed': !isFormValid
+  }">
+    Create Account
+  </button>
+
+</form>
+
+<p class="text-center text-gray-600 mt-6">
+  Already have an account?
+  <a  (click)="switch.emit('login')" class="text-[#0B2C7B] font-semibold hover:underline">
+    Login
+  </a>
+</p>
