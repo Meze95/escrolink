@@ -1,0 +1,68 @@
+<header class="bg-white shadow-sm fixed w-full top-0 left-0 z-50">
+  <div class="w-full mx-auto px-4">
+    <div class="flex items-center justify-between py-4">
+      
+      <!-- Logo + Navigation -->
+      <div class="flex items-center gap-8">
+        
+        <!-- Logo -->
+        <div class="text-xl font-bold text-gray-800">
+          <img src="assets/logo.png" alt="Logo" class="h-7 w-auto">
+        </div>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-6 text-[15px] font-medium">
+          <a routerLink="/" class="text-gray-700 hover:text-[#0B2C7B] transition">Home</a>
+          <a routerLink="/how-it-works" class="text-gray-700 hover:text-[#0B2C7B] transition">How It Works</a>
+          <a routerLink="/features" class="text-gray-700 hover:text-[#0B2C7B] transition">Features</a>
+          <a routerLink="/pricing" class="text-gray-700 hover:text-[#0B2C7B] transition">Pricing</a>
+          <a routerLink="/faq" class="text-gray-700 hover:text-[#0B2C7B] transition">FAQ</a>
+        </nav>
+      </div>
+
+      <!-- Right Buttons -->
+      <div class="hidden md:flex items-center gap-3">
+        <button routerLink="/login" 
+          class="px-6 py-2 border border-[#0B2C7B] text-[#0B2C7B] hover:bg-gray-100 transition rounded-md">
+          Login
+        </button>
+        <button routerLink="/register"
+          class="px-6 py-2 bg-[#0B2C7B] text-white hover:bg-[#093066] transition rounded-md">
+          Start
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button (click)="toggleMobileMenu()" class="md:hidden p-2">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+
+    </div>
+
+    <!-- Mobile Menu -->
+    @if (mobileMenuOpen) {
+      <div class="md:hidden py-4 border-t">
+        <nav class="flex flex-col space-y-3">
+          <a routerLink="/" class="text-gray-700 hover:text-[#0B2C7B] py-2">Home</a>
+          <a routerLink="/how-it-works" class="text-gray-700 hover:text-[#0B2C7B] py-2">How It Works</a>
+          <a routerLink="/features" class="text-gray-700 hover:text-[#0B2C7B] py-2">Features</a>
+          <a routerLink="/pricing" class="text-gray-700 hover:text-[#0B2C7B] py-2">Pricing</a>
+          <a routerLink="/faq" class="text-gray-700 hover:text-[#0B2C7B] py-2">FAQ</a>
+
+          <div class="flex flex-col space-y-2 pt-3">
+            <button class="px-6 py-2 border border-[#0B2C7B] text-[#0B2C7B] rounded-md hover:bg-gray-100">
+              Login
+            </button>
+            <button class="px-6 py-2 bg-[#0B2C7B] text-white rounded-md hover:bg-[#093066]">
+              Start
+            </button>
+          </div>
+        </nav>
+      </div>
+    }
+
+  </div>
+</header>

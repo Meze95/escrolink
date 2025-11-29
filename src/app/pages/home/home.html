@@ -1,0 +1,585 @@
+<section class="pt-20 md:pt-28 bg-[#0B2C7B] text-white relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-2 relative">
+
+    <!-- SLIDE CONTAINER -->
+    <div class="relative min-h-[400px] overflow-hidden">
+      <div 
+        *ngFor="let s of slides; let i = index"
+        class="absolute inset-0 transition-all duration-700 ease-in-out"
+        [ngClass]="i === currentSlide() ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10 pointer-events-none'"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-center px-4 md:px-16">
+
+          <!-- TEXT -->
+          <div class="text-center md:text-left order-2 md:order-1">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
+              {{ s.title }}
+            </h1>
+
+            <p class="mt-4 md:mt-6 text-base md:text-lg text-gray-200 leading-relaxed">
+              {{ s.desc }}
+            </p>
+
+            <div class="mt-6 md:mt-8 flex flex-col sm:flex-row justify-center md:justify-start gap-4 sm:space-x-4">
+              <button routerLink="/register"
+                class="bg-green-400 text-blue-900 px-6 md:px-8 py-3 rounded-xl text-base md:text-lg font-semibold hover:bg-green-300 transition w-full sm:w-auto">
+                Get Started
+              </button>
+
+              <!-- <button routerLink="/how-it-works"
+                class="border border-white px-6 md:px-8 py-3 rounded-xl text-base md:text-lg hover:bg-white hover:text-blue-900 transition w-full sm:w-auto">
+                Learn More
+              </button> -->
+            </div>
+          </div>
+
+          <!-- IMAGE -->
+          <div class="flex justify-center order-1 md:order-2">
+            <img [src]="s.image" class="w-[60%] sm:w-[70%] md:w-[80%] drop-shadow-lg" />
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- LEFT ARROW -->
+    <button 
+      (click)="prevSlide()"
+      class="absolute top-1/2 -translate-y-1/2 left-1 md:left-2 bg-white/20 hover:bg-white/40 text-white p-2 md:p-3 rounded-full transition z-10 backdrop-blur-sm"
+    >
+      <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 19l-7-7 7-7"/>
+      </svg>
+    </button>
+
+    <!-- RIGHT ARROW -->
+    <button 
+      (click)="nextSlide()"
+      class="absolute top-1/2 -translate-y-1/2 right-1 md:right-2 bg-white/20 hover:bg-white/40 text-white p-2 md:p-3 rounded-full transition z-10 backdrop-blur-sm"
+    >
+      <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    </button>
+
+    <!-- INDICATORS -->
+    <div class="flex justify-center mt-6 space-x-3 pb-4">
+      <div
+        *ngFor="let s of slides; let i = index"
+        (click)="goToSlide(i)"
+        class="h-2.5 w-2.5 md:h-3 md:w-3 rounded-full cursor-pointer transition"
+        [ngClass]="i === currentSlide() ? 'bg-green-400' : 'bg-gray-400'">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="bg-gray-50 py-24 px-6">
+  <h2 class="text-4xl font-extrabold text-center text-[#0B2C7B]">
+    How EscroLink Works
+  </h2>
+
+  <p class="text-center text-gray-600 mt-4 max-w-2xl mx-auto">
+    A simple workflow that builds trust between buyers and sellers on any social platform.
+  </p>
+
+  <div class="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto mt-16">
+
+    <!-- Step 1 -->
+    <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-green-400">
+      <div class="text-4xl mb-4 text-green-500">1</div>
+      <h3 class="font-bold text-xl text-[#0B2C7B]">Seller Creates Transaction</h3>
+      <p class="text-gray-600 mt-3">
+        Seller inputs the product details, price, and buyer's phone number.
+        A secure transaction link is created.
+      </p>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-green-400">
+      <div class="text-4xl mb-4 text-green-500">2</div>
+      <h3 class="font-bold text-xl text-[#0B2C7B]">Buyer Confirms & Pays</h3>
+      <p class="text-gray-600 mt-3">
+        Buyer reviews the item summary and pays into EscroLink's secure escrow wallet.
+      </p>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-green-400">
+      <div class="text-4xl mb-4 text-green-500">3</div>
+      <h3 class="font-bold text-xl text-[#0B2C7B]">Seller Ships the Goods</h3>
+      <p class="text-gray-600 mt-3">
+        EscroLink notifies the seller to ship. Tracking information is updated.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto mt-10">
+
+    <!-- Step 4 -->
+    <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-green-400">
+      <div class="text-4xl mb-4 text-green-500">4</div>
+      <h3 class="font-bold text-xl text-[#0B2C7B]">Buyer Receives & Inspects</h3>
+      <p class="text-gray-600 mt-3">
+        Once goods arrive, buyer checks and confirms that it matches what was ordered.
+      </p>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-green-400">
+      <div class="text-4xl mb-4 text-green-500">5</div>
+      <h3 class="font-bold text-xl text-[#0B2C7B]">Payment Released</h3>
+      <p class="text-gray-600 mt-3">
+        EscroLink releases funds to seller. Transaction closes successfully.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY CHOOSE ESCROWLINK -->
+<section class="bg-[#0B2C7B] py-24 px-6 text-white">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+    <div>
+      <h2 class="text-4xl font-extrabold leading-tight">
+        Why Choose <span class="text-green-400">EscroLink?</span>
+      </h2>
+
+      <p class="mt-6 text-gray-200 text-lg leading-relaxed">
+        Because online trading should be safe, secure, and scam-free.  
+        We bridge the trust gap between buyers and sellers in the social commerce world.
+      </p>
+
+      <ul class="mt-8 space-y-4 text-lg">
+        <li class="flex items-start gap-3">
+          <span class="text-green-400 text-2xl">✓</span>
+          Prevent fraud and delivery scams
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-green-400 text-2xl">✓</span>
+          Transparent and traceable transaction flow
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-green-400 text-2xl">✓</span>
+          Trusted by online sellers & resellers
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="text-green-400 text-2xl">✓</span>
+          24/7 buyer—seller support
+        </li>
+      </ul>
+    </div>
+
+    <div class="flex justify-center">
+      <img src="images/trust_svg.svg" class="w-[85%]" />
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="py-24 px-6 bg-white">
+  <h2 class="text-4xl text-center font-extrabold text-[#0B2C7B]">
+    Powerful Features Built for Safe Trading
+  </h2>
+
+  <div class="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto mt-16">
+
+    <div class="p-8 bg-blue-50 rounded-2xl shadow hover:shadow-xl transition">
+      <h3 class="font-bold text-xl text-[#0B2C7B]">Secure Escrow Wallet</h3>
+      <p class="text-gray-600 mt-3">
+        We hold the buyer's payment until they receive and approve the goods.
+      </p>
+    </div>
+
+    <div class="p-8 bg-blue-50 rounded-2xl shadow hover:shadow-xl transition">
+      <h3 class="font-bold text-xl text-[#0B2C7B]">SMS Transaction Updates</h3>
+      <p class="text-gray-600 mt-3">
+        Both buyer and seller get instant SMS notifications at every stage.
+      </p>
+    </div>
+
+    <div class="p-8 bg-blue-50 rounded-2xl shadow hover:shadow-xl transition">
+      <h3 class="font-bold text-xl text-[#0B2C7B]">Track Shipment Progress</h3>
+      <p class="text-gray-600 mt-3">
+        Sellers can update shipping status. Buyers can monitor delivery.
+      </p>
+    </div>
+
+    <div class="p-8 bg-blue-50 rounded-2xl shadow hover:shadow-xl transition">
+      <h3 class="font-bold text-xl text-[#0B2C7B]">Dispute Prevention</h3>
+      <p class="text-gray-600 mt-3">
+        Reduce "What I ordered vs What I got" issues.
+      </p>
+    </div>
+
+    <div class="p-8 bg-blue-50 rounded-2xl shadow hover:shadow-xl transition">
+      <h3 class="font-bold text-xl text-[#0B2C7B]">Built for Social Sellers</h3>
+      <p class="text-gray-600 mt-3">
+        Works with buyers from Facebook, Instagram, TikTok, WhatsApp & more.
+      </p>
+    </div>
+
+    <div class="p-8 bg-blue-50 rounded-2xl shadow hover:shadow-xl transition">
+      <h3 class="font-bold text-xl text-[#0B2C7B]">Fast Payouts</h3>
+      <p class="text-gray-600 mt-3">
+        Sellers get paid instantly once the buyer approves the delivery.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="py-24 px-6 bg-white">
+  <div class="max-w-6xl bg-[#0B2C7B] mx-auto p-4 text-center text-white">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4">Simple & Transparent Pricing</h2>
+    <p class="text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+      Pay only when transactions succeed. No hidden charges.
+    </p>
+
+    <!-- PRICING Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+      
+      <!-- Buyer -->
+      <div class="bg-white text-gray-900 shadow-lg p-8 flex flex-col justify-between">
+        <div>
+          <div class=" flex flex-col items-start gap-4 mb-4">
+            <p class="text-5xl font-bold mt-6 text-green-500">1%</p>
+            <h3 class="text-3xl font-bold">Buyer</h3>
+          </div>
+          <div class=" mb-6">
+            <div class="text-left">
+              <h4 class="font-semibold mb-1">What You'll Experience</h4>
+              <p>Shop with confidence knowing your funds are secured until you confirm receipt and satisfaction. Our platform ensures you only pay when you're happy.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seller -->
+      <div class="bg-white text-gray-900 shadow-lg p-8 flex flex-col justify-between">
+        <div>
+          <div class=" flex flex-col items-start gap-4 mb-4">
+            <p class="text-5xl font-bold mt-6 text-green-500">2%</p>
+            <h3 class="text-3xl font-bold">Seller</h3>
+          </div>
+          <div class=" mb-6">
+            <div class="text-left">
+              <h4 class="font-semibold mb-1">What You'll Become</h4>
+              <p>A trusted problem-solver who sees opportunities others miss. Build your reputation, grow your business, and connect with buyers who value quality and reliability.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="pb-24 px-6 bg-white">
+  <h2 class="text-4xl text-center font-extrabold text-[#0B2C7B]">
+    Loved by Buyers and Sellers
+  </h2>
+
+  <div class="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto mt-16">
+
+    <div class="bg-white p-8 rounded-2xl shadow">
+      <p class="text-gray-600">
+        "I sell on Instagram and EscroLink has saved me from unserious buyers!"
+      </p>
+      <h4 class="mt-4 font-bold text-[#0B2C7B]">— Sarah, Seller</h4>
+    </div>
+
+    <div class="bg-white p-8 rounded-2xl shadow">
+      <p class="text-gray-600">
+        "Finally a platform where I can pay confidently without fear of scams."
+      </p>
+      <h4 class="mt-4 font-bold text-[#0B2C7B]">— John, Buyer</h4>
+    </div>
+
+    <div class="bg-white p-8 rounded-2xl shadow">
+      <p class="text-gray-600">
+        "Smooth process. Fast payouts. Highly recommended."
+      </p>
+      <h4 class="mt-4 font-bold text-[#0B2C7B]">— Michael, Reseller</h4>
+    </div>
+
+  </div>
+</section>
+
+<!-- READY -->
+<section class="relative bg-[#2C2A63]">
+  <!-- Background Image -->
+  <div class="absolute inset-0">
+    <img
+      src="/images/discussion.webp"
+      alt="Students collaborating"
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-black/60"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="max-w-4xl mx-auto text-center relative mx-auto px-4 py-24 text-white">
+
+    <h2 class="text-4xl font-extrabold leading-tight">
+      Ready to Start Trading Safely?
+    </h2>
+
+    <p class="text-gray-200 mt-4 text-lg">
+      Join thousands of users who trust <span class="text-green-400 font-semibold">EscroLink</span>
+      for their peer-to-peer transactions.
+    </p>
+
+    <div class="mt-10 flex justify-center gap-6 flex-wrap">
+
+      <!-- Create Account -->
+      <button 
+        routerLink="/register"
+        class="px-10 py-4 bg-green-400 text-blue-900 font-semibold rounded-xl text-lg shadow-lg hover:bg-green-300 transition">
+        Create Free Account
+      </button>
+
+      <!-- View Demo -->
+      <button 
+        routerLink="/demo"
+        class="px-10 py-4 border border-white text-white font-semibold rounded-xl text-lg hover:bg-white hover:text-blue-900 transition">
+        View Demo
+      </button>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT US SECTION -->
+<section class="py-24 px-6 bg-gradient-to-b from-gray-50 to-white">
+  <div class="max-w-7xl mx-auto">
+    
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-[#0B2C7B]">
+        Get In Touch
+      </h2>
+      <p class="text-gray-600 mt-4 text-lg max-w-2xl mx-auto">
+        We're here to help 24/7. Reach out to us through any of these channels and we'll respond as soon as possible.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-12 items-start">
+      
+      <!-- Left Side - Contact Information -->
+      <div class="space-y-8">
+        
+        <!-- 24/7 Support Banner -->
+        <div class="bg-gradient-to-r from-green-400 to-green-500 p-8 rounded-2xl text-white shadow-xl">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="bg-white/20 p-4 rounded-full backdrop-blur-sm">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold">24/7 Online Support</h3>
+              <p class="text-green-50">We're always available to assist you</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Cards -->
+        <div class="space-y-10">
+          
+          <!-- Email -->
+          <div class="bg-white px-6 py-8 rounded-xl shadow-lg border-l-4 border-green-400 hover:shadow-xl transition group">
+            <div class="flex items-start gap-4">
+              <div class="bg-green-50 p-3 rounded-lg group-hover:bg-green-100 transition">
+                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-[#0B2C7B] text-lg mb-1">Email Support</h4>
+                <p class="text-gray-600 text-sm mb-2">Send us an email anytime</p>
+                <a href="mailto:support@escrolink.com" class="text-green-500 font-semibold hover:text-green-600 transition">
+                  support@escrolink.com
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- WhatsApp -->
+          <div class="bg-white px-6 py-8 rounded-xl shadow-lg border-l-4 border-green-400 hover:shadow-xl transition group">
+            <div class="flex items-start gap-4">
+              <div class="bg-green-50 p-3 rounded-lg group-hover:bg-green-100 transition">
+                <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-bold text-[#0B2C7B] text-lg mb-1">WhatsApp Chat</h4>
+                <p class="text-gray-600 text-sm mb-2">Chat with us instantly</p>
+                <a href="https://wa.me/1234567890" target="_blank" class="text-green-500 font-semibold hover:text-green-600 transition">
+                  +1 (234) 567-890
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Media -->
+          <div class="bg-white px-6 py-8 rounded-xl shadow-lg border-l-4 border-green-400 hover:shadow-xl transition">
+            <div class="flex items-start gap-4">
+              <div class="bg-green-50 p-3 rounded-lg">
+                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <h4 class="font-bold text-[#0B2C7B] text-lg mb-1">Social Media</h4>
+                <p class="text-gray-600 text-sm mb-3">Connect with us on social platforms</p>
+                <div class="flex gap-3">
+                  <a href="#" class="bg-green-50 hover:bg-green-100 p-2 rounded-lg transition">
+                    <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                  </a>
+                  <a href="#" class="bg-green-50 hover:bg-green-100 p-2 rounded-lg transition">
+                    <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                    </svg>
+                  </a>
+                  <a href="#" class="bg-green-50 hover:bg-green-100 p-2 rounded-lg transition">
+                    <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Contact Form -->
+      <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl">
+        <h3 class="text-2xl font-bold text-[#0B2C7B] mb-2">Send Us a Message</h3>
+        <p class="text-gray-600 mb-6">Fill out the form and we'll get back to you within 24 hours</p>
+        
+        <form class="space-y-5">
+          <!-- Name -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+            <input 
+              type="text" 
+              placeholder="John Doe"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition"
+            />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+            <input 
+              type="email" 
+              placeholder="john@example.com"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition"
+            />
+          </div>
+
+          <!-- Subject (custom dropdown to match template styling) -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Subject</label>
+            <div class="relative">
+              <input type="hidden" name="subject" [value]="selectedSubject" />
+              <button
+                type="button"
+                class="w-full text-left px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition flex items-center justify-between bg-white"
+                (click)="isSubjectOpen = !isSubjectOpen"
+                (keydown.enter)="$event.preventDefault(); isSubjectOpen = !isSubjectOpen"
+              >
+                <span class="text-gray-700">{{ selectedSubject }}</span>
+                <svg class="w-5 h-5 text-gray-500" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 8l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <ul *ngIf="isSubjectOpen" class="absolute z-20 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-56 overflow-auto">
+                <li *ngFor="let s of subjects"
+                    (click)="selectSubject(s)"
+                    class="px-4 py-3 hover:bg-green-50 cursor-pointer text-gray-700"
+                    [ngClass]="s === selectedSubject ? 'bg-green-50 font-semibold text-[#0B2C7B]' : ''">
+                  {{ s }}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+            <textarea 
+              rows="5"
+              placeholder="Tell us how we can help you..."
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent outline-none transition resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit"
+            class="w-full bg-green-400 hover:bg-green-500 text-[#0B2C7B] font-bold py-4 rounded-lg transition shadow-lg hover:shadow-xl"
+          >
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="bg-gray-50 py-24 px-6">
+  <h2 class="text-4xl text-center font-extrabold text-[#0B2C7B]">
+    Frequently Asked Questions
+  </h2>
+  <div class="max-w-4xl mx-auto mt-12 space-y-4">
+    <div 
+      *ngFor="let faq of faqs; let i = index"
+      class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
+      <!-- Question Header (Clickable) -->
+      <button
+        (click)="toggleFaq(i)"
+        class="w-full p-6 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
+        <h3 class="font-bold text-lg text-[#0B2C7B] pr-4">
+          {{ faq.question }}
+        </h3>
+        
+        <!-- Toggle Icon -->
+        <svg 
+          class="w-6 h-6 text-green-500 transition-transform duration-300 flex-shrink-0"
+          [ngClass]="faq.isOpen ? 'rotate-180' : ''"
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
+
+      <!-- Answer (Collapsible) -->
+      <div 
+        class="transition-all duration-300 ease-in-out overflow-hidden"
+        [ngClass]="faq.isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'"
+      >
+        <div class="px-6 pb-6 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+          {{ faq.answer }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

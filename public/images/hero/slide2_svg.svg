@@ -1,0 +1,70 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <circle cx="200" cy="200" r="180" fill="#FEE2E2" opacity="0.5"/>
+  <circle cx="200" cy="200" r="140" fill="#FECACA" opacity="0.5"/>
+  
+  <!-- Left side - What was ordered (good product) -->
+  <g transform="translate(100, 150)">
+    <rect x="-40" y="-60" width="80" height="100" rx="8" fill="#ffffff" stroke="#22C55E" stroke-width="3"/>
+    <text x="0" y="-70" font-family="Arial" font-size="14" font-weight="bold" fill="#22C55E" text-anchor="middle">ORDERED</text>
+    
+    <!-- Nice product box -->
+    <rect x="-25" y="-40" width="50" height="60" rx="4" fill="#4ADE80"/>
+    <rect x="-25" y="-40" width="50" height="15" fill="#22C55E"/>
+    <circle cx="0" cy="-32" r="3" fill="white"/>
+    
+    <!-- Stars (quality) -->
+    <text x="-20" y="30" font-size="16" fill="#FCD34D">★</text>
+    <text x="-5" y="30" font-size="16" fill="#FCD34D">★</text>
+    <text x="10" y="30" font-size="16" fill="#FCD34D">★</text>
+  </g>
+  
+  <!-- VS text in center -->
+  <g transform="translate(200, 200)">
+    <circle cx="0" cy="0" r="35" fill="#FCD34D" stroke="#F59E0B" stroke-width="3"/>
+    <text x="0" y="10" font-family="Arial" font-size="24" font-weight="bold" fill="#78350F" text-anchor="middle">VS</text>
+  </g>
+  
+  <!-- Right side - What was received (bad product) -->
+  <g transform="translate(300, 150)">
+    <rect x="-40" y="-60" width="80" height="100" rx="8" fill="#ffffff" stroke="#EF4444" stroke-width="3"/>
+    <text x="0" y="-70" font-family="Arial" font-size="14" font-weight="bold" fill="#EF4444" text-anchor="middle">RECEIVED</text>
+    
+    <!-- Damaged box -->
+    <rect x="-25" y="-40" width="50" height="60" rx="4" fill="#DC2626" opacity="0.7"/>
+    <line x1="-25" y1="-40" x2="25" y2="20" stroke="#7F1D1D" stroke-width="2"/>
+    <line x1="25" y1="-40" x2="-25" y2="20" stroke="#7F1D1D" stroke-width="2"/>
+    <text x="0" y="0" font-size="30" fill="#7F1D1D">?</text>
+    
+    <!-- Sad face -->
+    <circle cx="0" cy="30" r="2" fill="#EF4444"/>
+  </g>
+  
+  <!-- Shield with escrow protection at bottom -->
+  <g transform="translate(200, 320)">
+    <path d="M 0 -40 L -30 -30 L -30 -5 Q -30 10 0 25 Q 30 10 30 -5 L 30 -30 Z" fill="#4ADE80" stroke="#22C55E" stroke-width="2"/>
+    <text x="0" y="-5" font-family="Arial" font-size="12" font-weight="bold" fill="white" text-anchor="middle">ESCROW</text>
+    <text x="0" y="8" font-family="Arial" font-size="10" font-weight="bold" fill="white" text-anchor="middle">PROTECTED</text>
+  </g>
+  
+  <!-- Checkmark -->
+  <path d="M 170 340 L 180 350 L 200 330" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Money held safely -->
+  <g transform="translate(200, 260)">
+    <circle cx="-50" cy="0" r="20" fill="#FCD34D" stroke="#F59E0B" stroke-width="2"/>
+    <text x="-50" y="8" font-family="Arial" font-size="20" font-weight="bold" fill="#78350F" text-anchor="middle">$</text>
+    
+    <circle cx="50" cy="0" r="20" fill="#FCD34D" stroke="#F59E0B" stroke-width="2"/>
+    <text x="50" y="8" font-family="Arial" font-size="20" font-weight="bold" fill="#78350F" text-anchor="middle">$</text>
+    
+    <!-- Arrow pointing to shield -->
+    <path d="M -30 10 Q 0 20 30 10" fill="none" stroke="#22C55E" stroke-width="2" marker-end="url(#arrowhead)"/>
+  </g>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#22C55E"/>
+    </marker>
+  </defs>
+</svg>
