@@ -1,0 +1,121 @@
+<div class="flex min-h-screen bg-gray-50">
+  <aside class="w-72 bg-blue-900 text-white flex flex-col fixed left-0 top-0 bottom-0 z-50 transition-transform duration-300 lg:translate-x-0" [class.translate-x-0]="isSidebarOpen" [class.-translate-x-full]="!isSidebarOpen">
+    <div class="overflow-y-auto flex flex-col flex-1">
+      <div class="p-3 text-center border-b border-white/10 flex-shrink-0">
+        <button
+          class="absolute top-3 right-3 lg:hidden w-8 h-8 rounded-md flex items-center justify-center text-white bg-white/10 hover:bg-white/20"
+          type="button"
+          aria-label="Close menu"
+          (click)="closeSidebar()"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="flex justify-center mb-2">
+          <div class="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-7 h-7 text-white">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+        </div>
+        <h3 class="text-sm font-semibold m-0">{{ user.name }}</h3>
+        <p class="text-xs text-white/70 m-1 mb-0">{{ user.email }}</p>
+        <span class="inline-block mt-1.5 px-2 py-0.5 bg-green-500/20 text-green-400 rounded-full text-xs font-semibold">{{ user.role }}</span>
+      </div>
+
+      <nav class="flex-1 p-4">
+        <button
+          *ngFor="let item of menuItems"
+          type="button"
+          class="flex items-center gap-4 w-full px-4 py-3.5 mb-2 border-none rounded-xl cursor-pointer transition-all duration-300 text-left text-base hover:bg-white/10"
+          [class.bg-white]="activeMenu === item.id"
+          [class.bg-transparent]="activeMenu !== item.id"
+          [class.text-blue-900]="activeMenu === item.id"
+          [ngClass]="{'text-white': activeMenu !== item.id}"
+          [class.shadow-md]="activeMenu === item.id"
+          (click)="onMenuClick(item.id)"
+          [routerLink]="item.route">
+
+        <span class="w-7 h-7 flex items-center justify-center" [class.text-blue-900]="activeMenu === item.id" [ngClass]="{'text-white': activeMenu !== item.id}">
+          <svg *ngIf="item.icon === 'home'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-full h-full">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <svg *ngIf="item.icon === 'package'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-full h-full">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <svg *ngIf="item.icon === 'users'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-full h-full">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <svg *ngIf="item.icon === 'chart'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-full h-full">
+            <line x1="12" y1="20" x2="12" y2="10"></line>
+            <line x1="18" y1="20" x2="18" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="16"></line>
+          </svg>
+          <svg *ngIf="item.icon === 'bell'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-full h-full">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <svg *ngIf="item.icon === 'settings'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-full h-full">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3m15.364 6.364l-4.243-4.243m-6.364 0L3.636 7.636m12.728 12.728l-4.243-4.243m-6.364 0l-4.243 4.243"></path>
+          </svg>
+        </span>
+
+        <span class="font-medium text-base">{{ item.label }}</span>
+      </button>
+    </nav>
+
+    <div class="p-4 border-t border-white/10">
+      <button class="flex items-center gap-4 w-full px-4 py-3.5 bg-transparent border-none rounded-xl text-white cursor-pointer transition-all duration-300 hover:bg-white/10" (click)="onLogout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span>Logout</span>
+      </button>
+    </div>
+    </div>
+  </aside>
+
+  <div class="fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity duration-300" [class.opacity-0]="!isSidebarOpen" [class.opacity-100]="isSidebarOpen" [class.pointer-events-none]="!isSidebarOpen" [class.pointer-events-auto]="isSidebarOpen" (click)="closeSidebar()"></div>
+
+  <main class="flex-1 flex flex-col lg:ml-72">
+    <header class="h-auto bg-white flex items-center justify-between px-6 md:px-8 py-4 shadow-sm sticky top-0 z-40">
+      <div class="flex items-center gap-4">
+        <button class="w-10 h-10 bg-transparent border-none rounded-lg flex items-center justify-center cursor-pointer transition-colors duration-300 hover:bg-gray-100 lg:hidden" (click)="toggleSidebar()">
+          <svg *ngIf="!isSidebarOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6 text-gray-700">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <svg *ngIf="isSidebarOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6 text-gray-700">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <h1 class="text-2xl font-bold text-blue-900 m-0">Dashboard Overview</h1>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <button class="relative w-10 h-10 bg-transparent border-none rounded-lg flex items-center justify-center cursor-pointer transition-colors duration-300 hover:bg-gray-100">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6 text-gray-600">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs font-semibold flex items-center justify-center" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
+        </button>
+      </div>
+    </header>
+    <ng-content><router-outlet></router-outlet></ng-content>
+  </main>
+</div>

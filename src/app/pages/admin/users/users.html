@@ -1,0 +1,54 @@
+  <div class="dashboard-content">
+    <div class="content-header">
+      <h2 class="page-heading">User Management</h2>
+      <p class="page-description">Manage platform users and their permissions</p>
+    </div>
+
+    <div class="users-card">
+      <div class="card-header">
+        <h3 class="card-title">All Users</h3>
+        <div class="card-actions">
+          <input type="text" placeholder="Search users..." class="search-input">
+          <button class="add-user-btn">+ Add User</button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Join Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of users">
+              <td class="font-medium">{{ u.name }}</td>
+              <td>{{ u.email }}</td>
+              <td>
+                <span class="role-badge" [ngClass]="getRoleClass(u.role)">
+                  {{ u.role | titlecase }}
+                </span>
+              </td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(u.status)">
+                  {{ u.status | titlecase }}
+                </span>
+              </td>
+              <td class="text-gray-600">{{ u.joinDate }}</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="edit-btn">Edit</button>
+                  <button class="delete-btn">Delete</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,63 @@
+  <div class="dashboard-content">
+    <div class="content-header">
+      <h2 class="page-heading">Platform Settings</h2>
+      <p class="page-description">Manage platform configuration and preferences</p>
+    </div>
+
+    <!-- Platform Settings -->
+    <div class="settings-card">
+      <div class="card-header">
+        <h3 class="card-title">Platform Settings</h3>
+      </div>
+
+      <div class="settings-form">
+        <div class="form-group">
+          <label class="form-label">Platform Name</label>
+          <input type="text" [(ngModel)]="settings.platformName" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Support Email</label>
+          <input type="email" [(ngModel)]="settings.supportEmail" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Transaction Fee (%)</label>
+          <input type="number" [(ngModel)]="settings.transactionFee" step="0.1" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Max Transaction Amount (₦)</label>
+          <input type="number" [(ngModel)]="settings.maxTransactionAmount" class="form-input">
+        </div>
+
+        <div class="form-group checkbox">
+          <input type="checkbox" id="maintenance" [(ngModel)]="settings.maintenanceMode">
+          <label for="maintenance">Enable Maintenance Mode</label>
+        </div>
+
+        <button class="save-btn" (click)="savePlatformSettings()">Save Settings</button>
+      </div>
+    </div>
+
+    <!-- Notification Settings -->
+    <div class="settings-card">
+      <div class="card-header">
+        <h3 class="card-title">Notification Settings</h3>
+      </div>
+
+      <div class="settings-form">
+        <div class="form-group checkbox">
+          <input type="checkbox" id="email" [(ngModel)]="settings.emailNotifications">
+          <label for="email">Enable Email Notifications</label>
+        </div>
+
+        <div class="form-group checkbox">
+          <input type="checkbox" id="sms" [(ngModel)]="settings.smsNotifications">
+          <label for="sms">Enable SMS Notifications</label>
+        </div>
+
+        <button class="save-btn" (click)="saveNotificationSettings()">Save Preferences</button>
+      </div>
+    </div>
+  </div>
