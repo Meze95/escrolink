@@ -1,1 +1,85 @@
-<p>products works!</p>
+
+<div class="overflow-x-none p-6 md:p-8">
+	<div class="mb-8">
+		<h2 class="text-3xl font-bold text-blue-900 mb-2">Products</h2>
+	</div>
+	<div class="bg-white rounded-2xl shadow-md">
+		<div class="flex items-center justify-between p-6 border-b border-gray-200 flex-wrap gap-4">
+			<h3 class="text-xl font-bold text-blue-900 m-0">Product List</h3>
+			<button class="px-6 py-2 bg-blue-900 text-white border-none rounded-lg font-semibold text-sm cursor-pointer hover:bg-blue-800 flex items-center gap-2" (click)="openModal()">
+				<span class="material-icons text-lg">add</span> Add Product
+			</button>
+		</div>
+		<div class="hidden lg:block">
+			<table class="w-full border-collapse">
+				<thead>
+					<tr class="bg-gray-50">
+						<th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Name</th>
+						<th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Description</th>
+						<th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Amount</th>
+						<th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let product of products" class="border-b border-gray-200 hover:bg-gray-50">
+						<td class="px-6 py-4 text-sm font-medium text-gray-900">{{ product.name }}</td>
+						<td class="px-6 py-4 text-sm text-gray-900">{{ product.description }}</td>
+						<td class="px-6 py-4 text-sm font-semibold text-gray-900">{{ product.amount | currency }}</td>
+						<td class="px-6 py-4 text-sm">
+							<button class="px-4 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 mr-2 font-medium transition" (click)="editProduct(product)" title="Edit">
+								Edit
+							</button>
+							<button class="px-4 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 font-medium transition" (click)="deleteProduct(product.id)" title="Delete">
+								Delete
+							</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="block lg:hidden">
+			<div *ngFor="let product of products" class="px-6 py-4 border-b border-gray-200 hover:bg-gray-50">
+				<div class="flex items-center justify-between mb-3">
+					<span class="font-semibold text-gray-900">{{ product.name }}</span>
+					<span class="text-lg font-bold text-gray-900">{{ product.amount | currency }}</span>
+				</div>
+				<div class="mb-3 space-y-1">
+					<p class="text-sm text-gray-700 m-0">Description: <strong>{{ product.description }}</strong></p>
+				</div>
+				<div class="flex items-center justify-end gap-2 mt-2">
+					<button class="px-4 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 font-medium transition" (click)="editProduct(product)" title="Edit">
+						Edit
+					</button>
+					<button class="px-4 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 font-medium transition" (click)="deleteProduct(product.id)" title="Delete">
+						Delete
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Create Product Modal -->
+	<div *ngIf="showModal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+		<div class="bg-white p-8 rounded-2xl shadow-lg min-w-[320px] w-full max-w-md">
+			<h3 class="text-xl font-semibold mb-6 text-blue-900">Create Product</h3>
+			<form>
+				<div class="mb-5">
+					<label class="block mb-2 font-medium text-gray-700">Name</label>
+					<input type="text" [(ngModel)]="newProduct.name" name="name" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+				</div>
+				<div class="mb-5">
+					<label class="block mb-2 font-medium text-gray-700">Description</label>
+					<textarea [(ngModel)]="newProduct.description" name="description" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+				</div>
+				<div class="mb-5">
+					<label class="block mb-2 font-medium text-gray-700">Amount</label>
+					<input type="number" [(ngModel)]="newProduct.amount" name="amount" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+				</div>
+				<div class="flex justify-end gap-3 mt-8">
+					<button type="button" class="px-5 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300" (click)="closeModal()">Cancel</button>
+					<button type="button" class="px-5 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700" (click)="addProduct()">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

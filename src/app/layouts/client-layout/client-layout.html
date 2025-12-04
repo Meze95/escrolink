@@ -39,7 +39,7 @@
           (click)="onMenuClick(item.id)"
           [routerLink]="item.route">
 
-        <span class="w-7 h-7 flex items-center justify-center" [class.text-blue-900]="activeMenu === item.id" [ngClass]="{'text-white': activeMenu !== item.id}">
+        <span class="w-7 h-7 flex items-center justify-center" [class.text-green-600]="activeMenu === item.id" [ngClass]="{'text-white': activeMenu !== item.id}">
           <svg *ngIf="item.icon === 'home'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-full h-full">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>

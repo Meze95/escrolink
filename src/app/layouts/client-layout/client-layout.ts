@@ -18,6 +18,7 @@ export const CLIENT_MENU: MenuItem[] = [
 export class ClientLayout implements OnInit {
   isSidebarOpen = false;
   activeMenu = 'dashboard';
+  showProducts = true;
   
   user = {
     name: 'CLIENT DOE',
