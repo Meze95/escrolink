@@ -1,1 +1,590 @@
-<h2 class="page-heading">All Transactions</h2>
+<div class="overflow-x-none p-6 md:p-8">
+  <div class="mb-8">
+    <h2 class="text-3xl font-bold text-blue-900 mb-2">My Transactions</h2>
+    <p class="text-gray-600">View and manage your transactions</p>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-md">
+    <div class="flex items-center justify-between p-6 border-b border-gray-200 flex-wrap gap-4">
+      <h3 class="text-xl font-bold text-blue-900 m-0">Transaction History</h3>
+      <button 
+        class="px-6 py-2 bg-blue-900 text-white border-none rounded-lg font-semibold text-sm cursor-pointer hover:bg-blue-800 flex items-center gap-2 transition"
+        (click)="openCreateModal()">
+        <span class="material-icons text-lg">add</span>
+        Create New Transaction
+      </button>
+    </div>
+
+    <!-- Desktop Table View -->
+    <div class="hidden lg:block">
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-gray-50">
+            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Transaction ID</th>
+            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Buyer</th>
+            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Products</th>
+            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Delivery Type</th>
+            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Amount</th>
+            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Status</th>
+            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Date</th>
+            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700 whitespace-nowrap">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of transactions" class="border-b border-gray-200 hover:bg-gray-50">
+            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ transaction.id }}</td>
+            <td class="px-6 py-4 text-sm text-gray-900">
+              {{ transaction.buyer.firstName }} {{ transaction.buyer.lastName }}
+              <div class="text-xs text-gray-500">{{ transaction.buyer.email }}</div>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-900">{{ getProductNames(transaction.products) }}</td>
+            <td class="px-6 py-4 text-sm text-gray-900 capitalize">{{ transaction.delivery.deliveryType }}</td>
+            <td class="px-6 py-4 text-sm font-semibold text-gray-900">₦{{ transaction.totalAmount | number:'1.2-2' }}</td>
+            <td class="px-6 py-4 text-sm">
+              <span class="inline-block px-3 py-1.5 rounded-full text-xs font-semibold" [ngClass]="getStatusClass(transaction.status)">
+                {{ transaction.status | titlecase }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-600">{{ transaction.date }}</td>
+            <td class="px-6 py-4 text-sm">
+              <div class="relative">
+                <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors" (click)="toggleMenu(transaction.id)" type="button">
+                  <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-600">
+                    <circle cx="12" cy="5" r="2"></circle>
+                    <circle cx="12" cy="12" r="2"></circle>
+                    <circle cx="12" cy="19" r="2"></circle>
+                  </svg>
+                </button>
+                <div *ngIf="openMenuId === transaction.id" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50" style="z-index:1050;">
+                  <button (click)="viewTransaction(transaction)" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</button>
+                  <button (click)="openWaybillModal(transaction)" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Add Waybill Details</button>
+                  <button (click)="copyPaymentLink(transaction)" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Copy Link</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="transactions.length === 0">
+            <td colspan="8" class="px-6 py-8 text-center text-gray-500">No transactions found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="block lg:hidden">
+      <div *ngFor="let transaction of transactions" class="px-6 py-4 border-b border-gray-200 hover:bg-gray-50">
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-semibold text-gray-900">{{ transaction.id }}</span>
+          <span class="inline-block px-3 py-1.5 rounded-full text-xs font-semibold" [ngClass]="getStatusClass(transaction.status)">
+            {{ transaction.status | titlecase }}
+          </span>
+        </div>
+        <div class="mb-3 space-y-1">
+          <p class="text-sm text-gray-700 m-0">
+            <strong>Buyer:</strong> {{ transaction.buyer.firstName }} {{ transaction.buyer.lastName }}
+          </p>
+          <p class="text-sm text-gray-600 m-0">{{ transaction.buyer.email }}</p>
+          <p class="text-sm text-gray-700 m-0">
+            <strong>Products:</strong> {{ getProductNames(transaction.products) }}
+          </p>
+          <p class="text-sm text-gray-700 m-0">
+            <strong>Delivery:</strong> <span class="capitalize">{{ transaction.delivery.deliveryType }}</span>
+          </p>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col gap-1">
+            <span class="text-lg font-bold text-gray-900">₦{{ transaction.totalAmount | number:'1.2-2' }}</span>
+            <span class="text-sm text-gray-600">{{ transaction.date }}</span>
+          </div>
+          <div class="relative">
+            <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors" (click)="toggleMenu(transaction.id)" type="button">
+              <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-600">
+                <circle cx="12" cy="5" r="2"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+                <circle cx="12" cy="19" r="2"></circle>
+              </svg>
+            </button>
+            <div *ngIf="openMenuId === transaction.id" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50" style="z-index:1050;">
+              <button (click)="viewTransaction(transaction)" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</button>
+              <button (click)="openWaybillModal(transaction)" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Add Waybill Details</button>
+              <button (click)="copyPaymentLink(transaction)" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Copy Link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="transactions.length === 0" class="px-6 py-8 text-center text-gray-500">
+        No transactions found
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Transaction Modal - Updated Design -->
+  <div *ngIf="showCreateModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto py-8">
+    <div class="min-h-full flex items-center justify-center px-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl relative my-8" (click)="$event.stopPropagation()">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+          <h3 class="text-2xl font-semibold text-blue-900">Create New Transaction</h3>
+          <button class="text-gray-500 hover:text-gray-700 transition" (click)="closeCreateModal()" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+          <form class="space-y-6">
+          <!-- Buyer Details Section -->
+          <div class="border-b border-gray-200 pb-6">
+            <h4 class="text-lg font-semibold text-blue-900 mb-4">Buyer Details</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block mb-2 font-medium text-gray-700">First Name <span class="text-red-500">*</span></label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="buyerDetails.firstName" 
+                  name="buyerFirstName"
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                  required />
+              </div>
+              <div>
+                <label class="block mb-2 font-medium text-gray-700">Last Name <span class="text-red-500">*</span></label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="buyerDetails.lastName" 
+                  name="buyerLastName"
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                  required />
+              </div>
+              <div>
+                <label class="block mb-2 font-medium text-gray-700">Telephone <span class="text-red-500">*</span></label>
+                <input 
+                  type="tel" 
+                  [(ngModel)]="buyerDetails.tel" 
+                  name="buyerTel"
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                  required />
+              </div>
+              <div>
+                <label class="block mb-2 font-medium text-gray-700">Email <span class="text-red-500">*</span></label>
+                <input 
+                  type="email" 
+                  [(ngModel)]="buyerDetails.email" 
+                  name="buyerEmail"
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                  required />
+              </div>
+            </div>
+          </div>
+
+          <!-- Delivery Details Section -->
+          <div class="border-b border-gray-200 pb-6">
+            <h4 class="text-lg font-semibold text-blue-900 mb-4">Delivery Details</h4>
+            
+            <!-- Delivery Type -->
+            <div class="mb-4">
+              <label class="block mb-2 font-medium text-gray-700">Delivery Type <span class="text-red-500">*</span></label>
+              <div class="flex gap-4">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input 
+                    type="radio" 
+                    name="deliveryType" 
+                    value="home" 
+                    [(ngModel)]="deliveryDetails.deliveryType"
+                    class="w-4 h-4 text-blue-900 focus:ring-blue-500" />
+                  <span class="text-gray-700">Home Delivery</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input 
+                    type="radio" 
+                    name="deliveryType" 
+                    value="pickup" 
+                    [(ngModel)]="deliveryDetails.deliveryType"
+                    class="w-4 h-4 text-blue-900 focus:ring-blue-500" />
+                  <span class="text-gray-700">Pickup Location</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4">
+              <div>
+                <label class="block mb-2 font-medium text-gray-700">Full Address <span class="text-red-500">*</span></label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="deliveryDetails.fullAddress" 
+                  name="fullAddress"
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                  required />
+              </div>
+              <div>
+                <label class="block mb-2 font-medium text-gray-700">Address Line 2 (Optional)</label>
+                <input 
+                  type="text" 
+                  [(ngModel)]="deliveryDetails.addressLine2" 
+                  name="addressLine2"
+                  class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block mb-2 font-medium text-gray-700">State <span class="text-red-500">*</span></label>
+                  <input 
+                    type="text" 
+                    [(ngModel)]="deliveryDetails.state" 
+                    name="state"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    required />
+                </div>
+                <div>
+                  <label class="block mb-2 font-medium text-gray-700">Country <span class="text-red-500">*</span></label>
+                  <input 
+                    type="text" 
+                    [(ngModel)]="deliveryDetails.country" 
+                    name="country"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    required />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Details Section -->
+          <div class="border-b border-gray-200 pb-6">
+            <h4 class="text-lg font-semibold text-blue-900 mb-4">Product Details</h4>
+            
+            <!-- Add Product Form -->
+            <div class="bg-gray-50 p-4 rounded-lg mb-4">
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                <div class="md:col-span-2">
+                  <label class="block mb-2 font-medium text-gray-700">Select Product <span class="text-red-500">*</span></label>
+                  <select 
+                    [(ngModel)]="currentProductSelection.productId" 
+                    name="productSelect"
+                    (change)="onProductSelected()"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option [ngValue]="null">Choose a product...</option>
+                    <option *ngFor="let product of availableProducts" [ngValue]="product.id">
+                      {{ product.name }} - ₦{{ product.amount | number:'1.2-2' }}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block mb-2 font-medium text-gray-700">Quantity <span class="text-red-500">*</span></label>
+                  <input 
+                    type="number" 
+                    [(ngModel)]="currentProductSelection.quantity" 
+                    name="productQuantity"
+                    min="1"
+                    (input)="calculateProductTotal()"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    required />
+                </div>
+                <div>
+                  <label class="block mb-2 font-medium text-gray-700">Custom Price (Optional)</label>
+                  <input 
+                    type="number" 
+                    [(ngModel)]="currentProductSelection.customPrice" 
+                    name="customPrice"
+                    min="0"
+                    step="0.01"
+                    placeholder="Auto"
+                    (input)="calculateProductTotal()"
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <div *ngIf="currentProductSelection.productId" class="space-y-1">
+                  <p class="text-sm text-gray-600">
+                    Unit Price: ₦{{ getCurrentUnitPrice() | number:'1.2-2' }}
+                  </p>
+                  <p class="text-sm font-semibold text-gray-900">
+                    Total: ₦{{ calculateProductTotal() | number:'1.2-2' }}
+                  </p>
+                </div>
+                <button 
+                  type="button"
+                  class="px-4 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  (click)="addProductToTransaction()"
+                  [disabled]="!currentProductSelection.productId || currentProductSelection.quantity <= 0">
+                  Add Product
+                </button>
+              </div>
+            </div>
+
+            <!-- Selected Products List -->
+            <div *ngIf="selectedProducts.length > 0" class="space-y-3">
+              <h5 class="font-semibold text-gray-700 mb-3">Selected Products:</h5>
+              <div *ngFor="let product of selectedProducts; let i = index" class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+                  <div>
+                    <label class="block mb-1 text-xs font-medium text-gray-600">Product</label>
+                    <input 
+                      type="text" 
+                      [value]="product.productName" 
+                      disabled
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100 text-gray-700 cursor-not-allowed" />
+                  </div>
+                  <div>
+                    <label class="block mb-1 text-xs font-medium text-gray-600">Quantity</label>
+                    <input 
+                      type="number" 
+                      [value]="product.quantity" 
+                      disabled
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100 text-gray-700 cursor-not-allowed" />
+                  </div>
+                  <div>
+                    <label class="block mb-1 text-xs font-medium text-gray-600">Unit Price</label>
+                    <input 
+                      type="text" 
+                      [value]="'₦' + (product.unitPrice | number:'1.2-2')" 
+                      disabled
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100 text-gray-700 cursor-not-allowed" />
+                  </div>
+                  <div>
+                    <label class="block mb-1 text-xs font-medium text-gray-600">Total Amount</label>
+                    <input 
+                      type="text" 
+                      [value]="'₦' + (product.totalAmount | number:'1.2-2')" 
+                      disabled
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100 text-gray-700 font-semibold cursor-not-allowed" />
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button 
+                    type="button"
+                    class="px-3 py-1 text-red-600 hover:bg-red-50 rounded transition text-sm font-medium"
+                    (click)="removeProductFromTransaction(i)">
+                    Remove
+                  </button>
+                </div>
+              </div>
+              <div class="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-semibold text-blue-900">Grand Total:</span>
+                  <span class="text-xl font-bold text-blue-900">
+                    ₦{{ calculateTotalAmount() | number:'1.2-2' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="selectedProducts.length === 0" class="text-center py-4 text-gray-500 text-sm">
+              No products added yet. Please add at least one product.
+            </div>
+          </div>
+          </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-end gap-3 p-6 border-t border-gray-200">
+          <button 
+            type="button" 
+            class="px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition"
+            (click)="closeCreateModal()">
+            Cancel
+          </button>
+          <button 
+            type="button" 
+            class="px-6 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition"
+            (click)="createTransaction()">
+            Create Transaction
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Transaction Modal -->
+  <div *ngIf="showViewModal && selectedTransaction" class="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto py-8">
+    <div class="min-h-full flex items-center justify-center px-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl relative my-8" (click)="$event.stopPropagation()">
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+          <h3 class="text-2xl font-semibold text-blue-900">Transaction Details</h3>
+          <button class="text-gray-500 hover:text-gray-700 transition" (click)="closeViewModal()" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="p-6 space-y-6">
+          <!-- Transaction Info -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Transaction ID</label>
+              <p class="text-gray-900 font-semibold">{{ selectedTransaction.id }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Status</label>
+              <span class="inline-block px-3 py-1.5 rounded-full text-xs font-semibold" [ngClass]="getStatusClass(selectedTransaction.status)">
+                {{ selectedTransaction.status | titlecase }}
+              </span>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Date</label>
+              <p class="text-gray-900">{{ selectedTransaction.date }}</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Total Amount</label>
+              <p class="text-gray-900 font-semibold text-lg">₦{{ selectedTransaction.totalAmount | number:'1.2-2' }}</p>
+            </div>
+          </div>
+
+          <!-- Buyer Details -->
+          <div class="border-t border-gray-200 pt-4">
+            <h4 class="text-lg font-semibold text-blue-900 mb-4">Buyer Details</h4>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Name</label>
+                <p class="text-gray-900">{{ selectedTransaction.buyer.firstName }} {{ selectedTransaction.buyer.lastName }}</p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Email</label>
+                <p class="text-gray-900">{{ selectedTransaction.buyer.email }}</p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Telephone</label>
+                <p class="text-gray-900">{{ selectedTransaction.buyer.tel }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Delivery Details -->
+          <div class="border-t border-gray-200 pt-4">
+            <h4 class="text-lg font-semibold text-blue-900 mb-4">Delivery Details</h4>
+            <div class="space-y-2">
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Delivery Type</label>
+                <p class="text-gray-900 capitalize">{{ selectedTransaction.delivery.deliveryType }}</p>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-600 mb-1">Address</label>
+                <p class="text-gray-900">{{ selectedTransaction.delivery.fullAddress }}</p>
+                <p *ngIf="selectedTransaction.delivery.addressLine2" class="text-gray-900">{{ selectedTransaction.delivery.addressLine2 }}</p>
+                <p class="text-gray-900">{{ selectedTransaction.delivery.state }}, {{ selectedTransaction.delivery.country }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Products -->
+          <div class="border-t border-gray-200 pt-4">
+            <h4 class="text-lg font-semibold text-blue-900 mb-4">Products</h4>
+            <div class="space-y-3">
+              <div *ngFor="let product of selectedTransaction.products" class="p-3 bg-gray-50 rounded-lg">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <p class="font-semibold text-gray-900">{{ product.productName }}</p>
+                    <p class="text-sm text-gray-600">Quantity: {{ product.quantity }} × ₦{{ product.unitPrice | number:'1.2-2' }}</p>
+                  </div>
+                  <p class="font-semibold text-gray-900">₦{{ product.totalAmount | number:'1.2-2' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transaction History -->
+          <div class="border-t border-gray-200 pt-4">
+            <h4 class="text-lg font-semibold text-blue-900 mb-4">Transaction History</h4>
+            <div class="space-y-3">
+              <div *ngFor="let history of transactionHistory" class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <span class="w-2 h-2 rounded-full bg-blue-500 mt-2 flex-shrink-0"></span>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between mb-1">
+                    <p class="text-sm font-medium text-gray-900">{{ history.description }}</p>
+                    <span class="inline-block px-2 py-1 rounded text-xs font-semibold" [ngClass]="getStatusClass(history.currentStatus.toLowerCase())">
+                      {{ history.currentStatus }}
+                    </span>
+                  </div>
+                  <p class="text-xs text-gray-500">{{ history.historyDate }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 p-6 border-t border-gray-200">
+          <button 
+            type="button" 
+            class="px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition"
+            (click)="closeViewModal()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Waybill Modal -->
+  <div *ngIf="showWaybillModal && selectedTransaction" class="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto py-8">
+    <div class="min-h-full flex items-center justify-center px-4">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl relative my-8" (click)="$event.stopPropagation()">
+        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+          <h3 class="text-2xl font-semibold text-blue-900">Add Waybill Details</h3>
+          <button class="text-gray-500 hover:text-gray-700 transition" (click)="closeWaybillModal()" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-6 h-6">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="p-6">
+          <div class="mb-4 p-3 bg-blue-50 rounded-lg">
+            <p class="text-sm text-blue-900">
+              <strong>Transaction:</strong> {{ selectedTransaction.id }} | 
+              <strong>Buyer:</strong> {{ selectedTransaction.buyer.firstName }} {{ selectedTransaction.buyer.lastName }}
+            </p>
+          </div>
+
+          <form class="space-y-4">
+            <div>
+              <label class="block mb-2 font-medium text-gray-700">Tracking Number (Optional)</label>
+              <input 
+                type="text" 
+                [(ngModel)]="waybillDetails.trackingNumber" 
+                name="trackingNumber"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div>
+              <label class="block mb-2 font-medium text-gray-700">Delivery Company <span class="text-red-500">*</span></label>
+              <input 
+                type="text" 
+                [(ngModel)]="waybillDetails.deliveryCompany" 
+                name="deliveryCompany"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                required />
+            </div>
+
+            <div>
+              <label class="block mb-2 font-medium text-gray-700">Comment (Optional)</label>
+              <textarea 
+                [(ngModel)]="waybillDetails.comment" 
+                name="comment"
+                rows="4"
+                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Add any additional notes or comments about the shipment..."></textarea>
+            </div>
+          </form>
+        </div>
+
+        <div class="flex justify-end gap-3 p-6 border-t border-gray-200">
+          <button 
+            type="button" 
+            class="px-6 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300 transition"
+            (click)="closeWaybillModal()">
+            Cancel
+          </button>
+          <button 
+            type="button" 
+            class="px-6 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition"
+            (click)="saveWaybillDetails()">
+            Save Waybill Details
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
